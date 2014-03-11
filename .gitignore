@@ -1,0 +1,10 @@
+#Composer
+composer.lock
+composer.phar
+vendor/
+
+#OSX
+.DS_Store
+
+#phpstorm
+.idea
