@@ -12,6 +12,11 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Remdan\ModelManagerBundle\Manager\ModelManagerInterface;
 use Remdan\ModelManagerBundle\Event\PostRemoveEvent;
 use Remdan\ModelManagerBundle\Event\PreRemoveEvent;
+use Remdan\ModelManagerBundle\Event\PrePersistEvent;
+use Remdan\ModelManagerBundle\Event\PreUpdateEvent;
+use Remdan\ModelManagerBundle\Event\PostPersistEvent;
+use Remdan\ModelManagerBundle\Event\PostUpdateEvent;
+
 
 abstract class AbstractModelManager implements ModelManagerInterface
 {
@@ -167,7 +172,11 @@ abstract class AbstractModelManager implements ModelManagerInterface
     {
         $this->checkObjectClass($object);
 
+        $this->dispatchPrePersistEvent($object);
+
         $this->getEntityManager()->persist($object);
+
+        $this->dispatchPostPeristEvent($object);
 
         return $object;
     }
@@ -195,7 +204,11 @@ abstract class AbstractModelManager implements ModelManagerInterface
     {
         $this->checkObjectClass($object);
 
+        $this->dispatchPreUpdateEvent($object);
+
         $object->setUpdatedAt(new DateTime());
+
+        $this->dispatchPostUpdateEvent($object);
     }
 
     /**
@@ -278,5 +291,45 @@ abstract class AbstractModelManager implements ModelManagerInterface
         $postRemoveEvent = new PostRemoveEvent();
         $postRemoveEvent->setObject($object);
         $this->getEventDispatcher()->dispatch(PostRemoveEvent::EVENT_POST_REMOVE, $postRemoveEvent);
+    }
+
+    /**
+     * @param $object
+     */
+    protected function dispatchPrePersistEvent($object)
+    {
+        $preRemoveEvent = new PrePersistEvent();
+        $preRemoveEvent->setObject($object);
+        $this->getEventDispatcher()->dispatch(PrePersistEvent::EVENT_PRE_PERSIST, $preRemoveEvent);
+    }
+
+    /**
+     * @param $object
+     */
+    protected function dispatchPreUpdateEvent($object)
+    {
+        $preRemoveEvent = new PreUpdateEvent;
+        $preRemoveEvent->setObject($object);
+        $this->getEventDispatcher()->dispatch(PreUpdateEvent::EVENT_PRE_UPDATE, $preRemoveEvent);
+    }
+
+    /**
+     * @param $object
+     */
+    protected function dispatchPostPeristEvent($object)
+    {
+        $preRemoveEvent = new PostPersistEvent();
+        $preRemoveEvent->setObject($object);
+        $this->getEventDispatcher()->dispatch(PostPersistEvent::EVENT_POST_PERSIST, $preRemoveEvent);
+    }
+
+    /**
+     * @param $object
+     */
+    protected function dispatchPostUpdateEvent($object)
+    {
+        $preRemoveEvent = new PostUpdateEvent();
+        $preRemoveEvent->setObject($object);
+        $this->getEventDispatcher()->dispatch(PostUpdateEvent::EVENT_POST_UPDATE, $preRemoveEvent);
     }
 }
