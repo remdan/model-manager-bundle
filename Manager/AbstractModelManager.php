@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\DBAL\LockMode;
-use DateTime;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Remdan\ModelManagerBundle\Manager\ModelManagerInterface;
@@ -205,8 +204,6 @@ abstract class AbstractModelManager implements ModelManagerInterface
         $this->checkObjectClass($object);
 
         $this->dispatchPreUpdateEvent($object);
-
-        $object->setUpdatedAt(new DateTime());
 
         $this->dispatchPostUpdateEvent($object);
     }
