@@ -3,7 +3,7 @@
 namespace Remdan\ModelManagerBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\DBAL\LockMode;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -40,12 +40,12 @@ abstract class AbstractModelManager implements ModelManagerInterface
     protected $objectRepository;
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @param ObjectManager $entityManager
      * @param $entityClassName
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
+        ObjectManager $entityManager,
         $entityClassName,
         EventDispatcherInterface $eventDispatcher
     )
@@ -83,10 +83,10 @@ abstract class AbstractModelManager implements ModelManagerInterface
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @param ObjectManager $entityManager
      * @return $this
      */
-    public function setEntityManager(EntityManagerInterface $entityManager = null)
+    public function setEntityManager(ObjectManager $entityManager = null)
     {
         $this->entityManager = $entityManager;
 
