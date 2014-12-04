@@ -206,6 +206,8 @@ abstract class AbstractModelManager implements ModelManagerInterface
         $this->dispatchPreUpdateEvent($object);
 
         $this->dispatchPostUpdateEvent($object);
+        
+        return $object;
     }
 
     /**
